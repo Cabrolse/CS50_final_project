@@ -1,18 +1,33 @@
-import sys
+import time
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 def main():
-    driver = webdriver.Chrome()
+    options = Options()
+    options.add_argument("user-data-dir=./vinted_profile")
+    
+    driver = webdriver.Chrome(options=options)
     
     driver.get("https://www.vinted.com")
     
-    search_box = driver.find_element(By.ID, "search_text")
+    print("Bringing you to Vinted......")
+    
+    search_box = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "search_text")))
+    
+    search_box.clear()
     
     search_box.send_keys("blue shirt" + Keys.RETURN)
-    input("Press Enter in your terminal to close browser...")
+    print("I searched for Blue tshirt")
+    
+    
+    input("\nIf not logged in, log in manually now. Press ENTER when done to exit...")
     driver.quit()
+    
+    
     """ if len(sys.argv) > 1 and sys.argv[1] == "listing":
     listing()
 
